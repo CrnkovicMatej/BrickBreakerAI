@@ -11,7 +11,7 @@ class Ball:
         self.y = self.original_y = y
         self.radius = radius    
         #self.x_vel = 4
-        self.x_vel = random.randint(-6, 6)
+        self.x_vel = random.randint(-6, -2)
         self.y_vel = self.MAX_VEL
 
     def draw(self, win):

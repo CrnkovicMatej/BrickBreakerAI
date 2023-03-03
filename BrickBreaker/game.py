@@ -8,10 +8,13 @@ from .paddle import Paddle
 
 pygame.init()
 
-
+class GameInformation:
+    def __init__ (self, hits, score, dead_ball):
+        self.hits = hits 
+        self.score = score
+        self.dead_ball = dead_ball
 
 class Game:
-
     WIDTH, HEIGHT = 700, 800
     WIN = pygame.display.set_mode((WIDTH, HEIGHT)) 
     pygame.display.set_caption("Brick Braker")
@@ -29,6 +32,8 @@ class Game:
         self.paddle = Paddle(self.WIDTH//2 - self.PADDLE_WIDTH//2,self.HEIGHT - 10 - self.PADDLE_HEIGHT, self.PADDLE_WIDTH, self.PADDLE_HEIGHT)
         self.ball = Ball(self.paddle.x + self.PADDLE_WIDTH//2, self.paddle.y, self.BALL_RADIUS)
         self.bricks = self.generate_bricks(15, 10)
+        self.score = 0
+        self.hits = 0
 
     def generate_bricks(self, rows, cols):
         gap = 2
@@ -51,12 +56,10 @@ class Game:
         for brick in bricks:
                 brick.draw(win)
 
-        hits_text = self.S_FONT.render(f"Score: {hits}", 1, (255, 0, 0))
-        win.blit(hits_text, (self.WIDTH//2 -  hits_text.get_width()/2, 15))
+        hits_text = self.S_FONT.render(f"Score: {self.score}", 1, (255, 0, 0))
+        win.blit(hits_text, (self.WIDTH//2 -  hits_text.get_width()/2, 40))
 
         pygame.display.update()
-
-    
 
     def handle_collision(self, ball, paddle):
         if ball.y + ball.radius >= self.HEIGHT:
@@ -66,7 +69,6 @@ class Game:
         
         if ball.x <= 0:
             ball.x_vel *=-1
-        
         if ball.x + ball.radius >= self.WIDTH:
             ball.x_vel *=-1
 
@@ -80,6 +82,7 @@ class Game:
                     redu_fact = (paddle.width / 2) / ball.MAX_VEL
                     x_vel = diff_in_x / redu_fact
                     ball.x_vel = x_vel
+                    self.hits +=1
         return True
 
     def handle_paddle_movement(self, keys, paddle):
@@ -87,3 +90,44 @@ class Game:
             paddle.move(right = True)
         elif keys[pygame.K_LEFT] and paddle.x - paddle.VEL >= 0:
             paddle.move(right = False)
+
+    def loop(self):
+        dead_ball = False
+        self.draw(self.WIN, self.paddle, self.ball, self.hits, self.bricks)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+                break
+
+        keys = pygame.key.get_pressed()
+        self.handle_paddle_movement(keys, self.paddle)   
+
+        self.ball.move()
+        if not self.handle_collision(self.ball, self.paddle):
+            dead_ball = True
+            lose_text = self.S_FONT.render(f"You Lost! Your score is {self.score}", 1, (255, 0, 0))
+            self.WIN.blit(lose_text, (self.WIDTH//2 -  lose_text.get_width()/2, self.HEIGHT//2 - lose_text.get_width()/2))
+            pygame.display.update()
+            #pygame.time.delay(1000)
+            #pygame.quit()
+            #quit()
+
+        for brick in self.bricks[:]:
+            if(brick.collide(self.ball)):
+                self.score +=1
+                if brick.hit == True:
+                    self.bricks.remove(brick)
+                    break
+        
+        if self.score == 150:
+            win_text = self.S_FONT.render(f"You have WON!", 1, (255, 0, 0))
+            self.WIN.blit(win_text, (self.WIDTH//2 -  win_text.get_width()/2, self.HEIGHT//2 - win_text.get_width()/2))
+            pygame.display.update()
+            #pygame.time.delay(1000)
+            #pygame.quit()
+            #quit()
+        
+        game_info = GameInformation(self.score, self.hits, dead_ball )
+        return game_info
+
+
