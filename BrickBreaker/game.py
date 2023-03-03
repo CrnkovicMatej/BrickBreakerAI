@@ -120,6 +120,7 @@ class Game:
                     break
         
         if self.score == 150:
+            dead_ball = True
             win_text = self.S_FONT.render(f"You have WON!", 1, (255, 0, 0))
             self.WIN.blit(win_text, (self.WIDTH//2 -  win_text.get_width()/2, self.HEIGHT//2 - win_text.get_width()/2))
             pygame.display.update()
