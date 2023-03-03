@@ -84,15 +84,21 @@ def eval_genomes(genomes, config):
             gen_label = game.game.S_FONT.render("Gen: " + str(gen) + " Species: " + str(index+1), 1, (255, 0, 0))
             game.game.WIN.blit(gen_label, (game.game.WIDTH - gen_label.get_width() - 10, 2))
             pygame.display.update()
-
+            local_dir = os.path.dirname(__file__)
             if score >= 49 and game_info.dead_ball:  # saves models that score 49 or beat the game
-                pickle.dump(nets[index], open("perfect.pickle", "wb"))
+                perfect_path = os.path.join(local_dir, "perfect.pickle")
+                with open(perfect_path, 'wb') as f:
+                    pickle.dump(nets[index], f)
                 break
             elif score - penalty >= 46 and game_info.dead_ball:  # saves models that scored 47 or more
-                pickle.dump(nets[index], open("best.pickle", "wb"))
+                best_path = os.path.join(local_dir, "best.pickle")
+                with open(best_path, 'wb') as f:
+                    pickle.dump(nets[index], f)
                 break
             elif score - penalty >= 40 and ge[index].fitness > 44 and game_info.dead_ball:  # saves models with a score over ~42
-                pickle.dump(nets[index], open("good.pickle", "wb"))
+                good_path = os.path.join(local_dir, "good.pickle")
+                with open(good_path, 'wb') as f:
+                    pickle.dump(nets[index], f)
                 break
 
             if (pygame.time.get_ticks() - start_ticks)/1000 > 500:
@@ -117,11 +123,15 @@ def run_neat(config):
     pop.add_reporter(stats)
     pop.add_reporter(neat.Checkpointer(1))
     winner = pop.run(eval_genomes, 100)
-    with open('winner.pkl', 'wb') as f:
+    local_dir = os.path.dirname(__file__)
+    winner_path = os.path.join(local_dir, "winner.pkl")
+    with open(winner_path, 'wb') as f:
         pickle.dump(winner, f)
 
 def test_best_network(config):
-    with open("winner.pkl", "rb") as f:
+    local_dir = os.path.dirname(__file__)
+    winner_path = os.path.join(local_dir, "winner.pkl")
+    with open(winner_path, "rb") as f:
         winner = pickle.load(f)
     winner_net = neat.nn.FeedForwardNetwork.create(winner, config)
 
@@ -132,5 +142,5 @@ if __name__ == "__main__":
     local_dir = os.path.dirname(__file__)
     config_path = os.path.join(local_dir, "config.txt")
     config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction, neat.DefaultSpeciesSet, neat.DefaultStagnation, config_path)
-    run_neat(config)
-    #test_best_network(config)
+    #run_neat(config)
+    test_best_network(config)
