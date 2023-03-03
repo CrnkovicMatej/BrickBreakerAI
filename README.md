@@ -48,3 +48,10 @@ U datoteci winner.pkl sačuvan je genom kojeg je NEAT algoritam izbacio kao najb
 
 Ukoliko samostalno želite provjeriti kako taj genom igra igru možete jednostavno pokrenuti 
 datoteku test_best_ai.py 
+
+Ukoliko želite testirati neki drugi pickle potrebno ga je eksplicitno zadati u 39. liniji datototeke test_best_ai.py
+
+```python
+#Umjesto winner.pkl odabrati svoj pickle
+winner_path = os.path.join(local_dir, "winner.pkl")
+```
