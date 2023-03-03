@@ -3,7 +3,7 @@
 Ovaj projekat implementira neuronsku mrežu koja igra igru Brick Breaker, kopiju popularne
 Atari igre 'Breakout' koristeći NEAT algoritam.
 
-![alt text](https://raw.githubusercontent.com/[username]/[reponame]/[branch]/Videos/bricks.jpg)
+![alt text](https://raw.githubusercontent.com/CrnkovicMatej/BrickBreakerAI/main/Videos/bricks.jpg)
 
 
 # Zahtjevi
