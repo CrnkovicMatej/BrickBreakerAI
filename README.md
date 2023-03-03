@@ -55,3 +55,16 @@ Ukoliko želite testirati neki drugi pickle potrebno ga je eksplicitno zadati u 
 #Umjesto winner.pkl odabrati svoj pickle
 winner_path = os.path.join(local_dir, "winner.pkl")
 ```
+
+## Novo treniranje AI
+
+Ukoliko želite iznova trenirati AI možete to učiniti uz jednostavno pokretanje datoteke
+main.py. Kako je u trenutačnoj implementaciji omogućeno stvaranje takozvanih checkpoint-a
+ukoliko se odlučite u nekom trenutku prekinuti trening, a kasnije ga nastaviti možete to učiniti tako da odkomentirate prvu liniju
+idućeg snippeta i zakomentirate drugu uz napomenu da odaberete checkpoint od kojeg želite nastaviti (ovdje je to checkpoint 4).
+Idući snippet nalazi se u 119 i 120 liniji datoteke main.py
+
+```python
+#pop = neat.Checkpointer.restore_checkpoint('neat-checkpoint-4')
+pop = neat.Population(config)
+```
