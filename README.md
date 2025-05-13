@@ -1,12 +1,78 @@
 # BrickBreakerAI
 
+This project implements a neural network that plays Brick Breaker, a clone of the popular Atari game 'Breakout', using the NEAT algorithm.
+
+![alt text](https://raw.githubusercontent.com/CrnkovicMatej/BrickBreakerAI/main/Videos/bricks.jpg)
+
+## Requirements
+
+To run this project successfully, you need Python and the following packages installed:  
+- `pygame`  
+- `neat-python`  
+
+All dependencies are listed in `requirements.txt`.
+
+### Install Packages
+
+You can install the packages using [pip](https://pip.pypa.io/en/stable/):
+
+```bash
+pip install pygame
+pip install neat-python
+```
+
+## Playing the Game
+
+For AI training, a custom Brick Breaker game is implemented and placed within the BrickBreaker Python package.
+
+If you'd like to play the game manually, run the playGame.py file.
+
+To adjust the game speed, change the clock.tick() value in line 12 of playGame.py:
+```python
+clock.tick(100)
+```
+
+## Quick Demo of AI Training and Gameplay
+To preview AI training and gameplay, two videos are included in the repository:
+
+treniranje.mp4 – showcases the AI bot learning process across generations
+
+best AI playing.mp4 – shows the final trained AI playing the game
+
+## Running the AI
+The file winner.pkl contains the genome of the best-performing agent trained using the NEAT algorithm.
+
+To see it in action, simply run: test_best_ai.py 
+
+To test a different genome pickle, replace the filename in line 39 of test_best_ai.py:
+```python
+# Replace 'winner.pkl' with your own pickle file
+winner_path = os.path.join(local_dir, "winner.pkl")
+```
+## Training the AI from Scratch
+
+To retrain the AI, run:
+```python
+python main.py
+```
+
+Training uses NEAT checkpointing. If interrupted, you can resume from a specific checkpoint by adjusting lines 119–120 in main.py:
+
+
+```python
+#pop = neat.Checkpointer.restore_checkpoint('neat-checkpoint-4')
+pop = neat.Population(config)
+```
+
+# BrickBreakerAI (HR)
+
 Ovaj projekat implementira neuronsku mrežu koja igra igru Brick Breaker, kopiju popularne
 Atari igre 'Breakout' koristeći NEAT algoritam.
 
 ![alt text](https://raw.githubusercontent.com/CrnkovicMatej/BrickBreakerAI/main/Videos/bricks.jpg)
 
 
-# Zahtjevi
+## Zahtjevi
 
 Kako bi uspješno pokretali ove programe potrebno je imati instaliran python 
 te programske pakete pygame i neat-python.
